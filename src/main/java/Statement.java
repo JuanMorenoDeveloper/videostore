@@ -1,9 +1,8 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-import static java.util.stream.Collectors.joining;
-import static java.util.stream.Collectors.summingDouble;
-import static java.util.stream.Collectors.summingInt;
+import static java.util.stream.Collectors.*;
 
 public class Statement {
 
@@ -19,9 +18,7 @@ public class Statement {
         List<String> lines = new ArrayList<>();
 
         lines.add("Rental Record for " + name);
-
-        items.forEach(i -> lines.add("\t" + i.title + "\t" + String.valueOf(i.price)));
-
+        lines.addAll(items.stream().map(i -> "\t" + i.title + "\t" + String.valueOf(i.price)).collect(toList()));
         lines.add("You owed " + String.valueOf(items.stream().collect(summingDouble(i -> i.price))));
         lines.add("You earned " + String.valueOf(items.stream().collect(summingInt(i -> i.points))) + " frequent renter points");
 
