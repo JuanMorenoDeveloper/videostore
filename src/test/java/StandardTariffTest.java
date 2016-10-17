@@ -3,9 +3,9 @@ import org.junit.Test;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.*;
 
-public class TariffTest {
+public class StandardTariffTest {
 
-    private final Tariff tariff = new Tariff();
+    private final Tariff tariff = new StandardTariff();
 
     @Test
     public void regular_movie_pricing() throws Exception {
