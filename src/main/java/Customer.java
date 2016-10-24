@@ -15,7 +15,7 @@ public class Customer {
         rentals.add(rental);
     }
 
-    public String generateStatement(StatementGenerator generator) {
-        return generator.generate(name, rentals, plan);
+    public String generateStatement(StatementRenderer renderer) {
+        return renderer.render(plan.statement(name, rentals));
     }
 }
