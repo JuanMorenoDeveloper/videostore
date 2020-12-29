@@ -4,17 +4,16 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import org.hamcrest.Matcher;
-import org.junit.Assert;
 import org.junit.Test;
 
-public class VideoStoreTest {
+public class VideoEndToEndTest {
 
     private final Customer customer = new Customer("Fred",
-        new PricePlan(new LoyaltyPlan(), new Tariff()));
+        new PricePlan(new LoyaltyPlan(), new StandardTariff()));
 
     @Test
     public void basic_tariff() {
-        Customer basic = new Customer("basic", new PricePlan(new LoyaltyPlan(), new Tariff()));
+        Customer basic = new Customer("basic", new PricePlan(new LoyaltyPlan(), new StandardTariff()));
         basic.addRental(new Rental(newChildrens("childrens"), 3));
         basic.addRental(new Rental(newRegular("regular"), 3));
         basic.addRental(new Rental(newRelease("new"), 3));
@@ -25,6 +24,22 @@ public class VideoStoreTest {
                 "\tregular\t3.5",
                 "\tnew\t9.0",
                 "You owed 14.0",
+                "You earned 4 frequent renter points"));
+    }
+
+    @Test
+    public void vip_tariff() {
+        Customer vip = new Customer("vip", new PricePlan(new LoyaltyPlan(), new VipTariff()));
+        vip.addRental(new Rental(newChildrens("childrens"), 3));
+        vip.addRental(new Rental(newRegular("regular"), 3));
+        vip.addRental(new Rental(newRelease("new"), 3));
+
+        assertThat(vip.generateStatement(new StatementGenerator()),
+            hasStatementElement("Rental Record for vip",
+                "\tchildrens\t0.0",
+                "\tregular\t4.0",
+                "\tnew\t6.0",
+                "You owed 10.0",
                 "You earned 4 frequent renter points"));
     }
 
